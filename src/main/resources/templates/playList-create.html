@@ -1,0 +1,54 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout ="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{loyout}">
+<head>
+  <title>Club Create</title>
+</head>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+  <section layout:fragment="body" class="py-5">
+    <form role="form" method="post" th:action="@{/playList/new}" th:object = ${playList}>
+      <div class="container">
+        <div class="form-row">
+          <div class="form-group col-md6">
+            <label for="name">Name</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    th:field="*{name}"
+                    placeholder="Name">
+            <p th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}"></p>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="photoUrl">PhotoUrl</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="photoUrl"
+                    name="photoUrl"
+                    th:field="*{photoUrl}"
+                    placeholder="Photo Url">
+            <p th:if="${#fields.hasErrors('photoUrl')}" class="text-danger" th:errors="*{photoUrl}"></p>
+          </div>
+          <div class="form-group mb-2">
+            <label for="text">Text</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="text"
+                    name="text"
+                    th:field="*{text}"
+                    placeholder="Text">
+            <p th:if="${#fields.hasErrors('text')}" class="text-danger" th:errors="*{text}"></p>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+      </div>
+    </form>
+  </section>
+</main>
+</body>
+</html>
