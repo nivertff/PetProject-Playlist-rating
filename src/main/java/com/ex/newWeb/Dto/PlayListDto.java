@@ -19,8 +19,7 @@ public class PlayListDto {
     private String name;
     @NotEmpty(message = "RatioList photoUrl should not be empty")
     private String photoUrl;
-    @NotEmpty(message = "RatioList ratio should not be empty")
-    private Double Ratio;
-    private String Text;
+    private Double ratio;
+    private String text;
 
 }

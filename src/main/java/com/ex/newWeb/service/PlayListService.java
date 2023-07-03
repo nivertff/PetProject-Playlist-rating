@@ -2,9 +2,11 @@ package com.ex.newWeb.service;
 
 import com.ex.newWeb.Dto.PlayListDto;
 import com.ex.newWeb.models.PlayList;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface PlayListService {
     List<PlayListDto> findAllPlayLists();
 

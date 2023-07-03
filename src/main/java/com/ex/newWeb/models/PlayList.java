@@ -19,7 +19,7 @@ public class PlayList {
     private Long id;
     private String name;
     private String photoUrl;
-    private Double Ratio;
-    private String Text;
+    private Double ratio;
+    private String text;
 
 }

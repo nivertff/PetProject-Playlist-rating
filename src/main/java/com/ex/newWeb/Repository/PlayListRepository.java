@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface PlayListRepository extends JpaRepository<PlayList,Long> {
     Optional<PlayList> findByName(String url);
 
-    void delete(Long playListId);
 }

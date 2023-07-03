@@ -38,7 +38,7 @@ public class PlayListServiceImpl implements PlayListService {
 
     @Override
     public void delete(Long playListId) {
-        playListRepository.delete(playListId);
+        playListRepository.deleteById(playListId);
     }
 
     @Override

@@ -8,7 +8,7 @@
 <body class="d-flex flex-column h-100">
 <main class="flex-shrink-0">
   <section layout:fragment="body" class="py-5">
-    <form role="form" method="post" th:action="@{/playList/new}" th:object = ${playList}>
+    <form role="form" method="post" th:action="@{/playLists/new}" th:object = ${playList}>
       <div class="container">
         <div class="form-row">
           <div class="form-group col-md6">
@@ -32,6 +32,18 @@
                     th:field="*{photoUrl}"
                     placeholder="Photo Url">
             <p th:if="${#fields.hasErrors('photoUrl')}" class="text-danger" th:errors="*{photoUrl}"></p>
+          </div>
+          <div class="form-group mb-2">
+            <label for="ratio">Ratio</label>
+            <input
+                    type="number"
+                    step="any"
+                    class="form-control"
+                    id="ratio"
+                    name="ratio"
+                    th:field="*{ratio}"
+                    placeholder="Ratio">
+            <p th:if="${#fields.hasErrors('ratio')}" class="text-danger" th:errors="*{ratio}"></p>
           </div>
           <div class="form-group mb-2">
             <label for="text">Text</label>

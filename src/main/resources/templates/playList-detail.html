@@ -3,7 +3,7 @@
         xmlns:layout ="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{loyout}">
 <head>
-  <title>Club Create</title>
+  <title>PlayList Detail</title>
 </head>
 <body class="d-flex flex-column h-100">
 <main class="flex-shrink-0">
@@ -24,9 +24,11 @@
           <div class="card mb-4">
             <a href="#!"><img class="card-img-top" th:src="${playList.photoUrl}" alt="..." /></a>
             <div class="card-body">
-              <h2 class="card-title">About this running club</h2>
+              <h2 class="card-title">About playList</h2>
               <p class="card-text" th:text="${playList.text}"></p>
-              <a class="btn btn-primary" th:href="@{/playList/{playListId}/delete(playListId=${playList.id})}">Delete</a>
+              <h2 class="card-text">Ratio playList :</h2>
+              <p class="card-text" th:text="${playList.ratio}"></p>
+              <a class="btn btn-primary" th:href="@{/playLists/{playListId}/delete(playListId=${playList.id})}">Delete</a>
             </div>
           </div>
           <!-- Nested row for non-featured blog posts-->

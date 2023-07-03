@@ -31,19 +31,21 @@ public class PlayListController {
         model.addAttribute("playLists", playLists);
         return "playList-list";
     }
-    @GetMapping("/playLists/new")
-    public String createPlayList(Model model){
-        PlayList playList = new PlayList();
-        model.addAttribute("playList", playList);
-        return "playList-create";
-    }
     @GetMapping("/playLists/{playListId}")
     public String playListDetail(@PathVariable("playListId") Long playListId, Model model){
         PlayListDto playListDto = playListService.findPlayListById(playListId);
         model.addAttribute("playList",playListDto);
         return "playList-detail";
     }
-    @GetMapping("/plaList/{playListId}/delete")
+
+    @GetMapping("/playLists/new")
+    public String createPlayList(Model model){
+        PlayList playList = new PlayList();
+        model.addAttribute("playList", playList);
+        return "playList-create";
+    }
+
+    @GetMapping("/playLists/{playListId}/delete")
     public String playListDelete(@PathVariable("playListId") Long playListId, Model model){
         playListService.delete(playListId);
         return "redirect:/playLists";
@@ -58,6 +60,24 @@ public class PlayListController {
         playListService.savePlayList(playListDto);
         return "redirect:/playLists";
     }
+    @GetMapping("/playLists/{playListId}/edit")
+    public String editPlayListForm(@PathVariable("playListId") Long playListId, Model model){
+        PlayListDto playListDto = playListService.findPlayListById(playListId);
+        model.addAttribute("playList", playListDto);
+        return "playList-edit";
+    }
+    @PostMapping("/playLists/{playListId}/edit")
+    public String updatePlayList(@PathVariable("playListId") Long clubId,
+                             @Valid @ModelAttribute("club") PlayListDto playListDto,
+                             BindingResult result){
+        if(result.hasErrors()){
+            return "playList-edit";
+        }
+        playListDto.setId(clubId);
+        playListService.updatePlayList(playListDto);
+        return "redirect:/playLists";
+    }
+
 
 
 }
