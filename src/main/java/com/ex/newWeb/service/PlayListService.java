@@ -17,4 +17,6 @@ public interface PlayListService {
     PlayList savePlayList(PlayListDto playListDto);
 
     void updatePlayList(PlayListDto playListDto);
+
+    List<PlayListDto> searchClubs(String query);
 }

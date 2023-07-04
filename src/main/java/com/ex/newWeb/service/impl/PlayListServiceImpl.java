@@ -51,4 +51,10 @@ public class PlayListServiceImpl implements PlayListService {
         PlayList playList = mapToPlayList(playListDto);
         playListRepository.save(playList);
     }
+
+    @Override
+    public List<PlayListDto> searchClubs(String query) {
+        List<PlayList> playLists = playListRepository.searchClubs(query);
+        return playLists.stream().map(playList -> mapToPlayListDto(playList)).collect(Collectors.toList());
+    }
 }

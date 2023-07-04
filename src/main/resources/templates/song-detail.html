@@ -1,0 +1,33 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+        layout:decorate="~{loyout}">
+<head>
+  <title>Club Create</title>
+</head>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+  <section layout:fragment="body" class="py-5">
+    <!-- Page content-->
+    <div class="container">
+      <div class="row">
+        <!-- Blog entries-->
+        <div class="col-lg-8">
+          <!-- Featured blog post-->
+          <div class="card mb-4">
+           <div class="card-body">
+             <h2 class="fw-bolder" th:text="${song.name}"></h2>
+              <h3 class="" th:text="${song.singer}"></h3>
+              <h4 class="card-title">Ratio:</h4>
+              <h3 class="card-text" th:text="${song.ratio}"></h3>
+             <h4 class="card-title">Text:</h4>
+              <h5 class="card-text" th:text="${song.text}"></h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

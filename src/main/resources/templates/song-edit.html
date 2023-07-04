@@ -8,11 +8,11 @@
 <body class="d-flex flex-column h-100">
 <main class="flex-shrink-0">
   <section layout:fragment="body" class="py-5">
-    <form role="form" method="post" th:action="@{/playLists/new}" th:object = ${playList}>
+    <form role="form" method="post" th:action="@{/songs/{songId}/edit(songId=${songId})}" th:object = ${song}>
       <div class="container">
         <div class="form-row">
           <div class="form-group col-md6">
-            <label for="name">Name PlayList</label>
+            <label for="name">Name track</label>
             <input
                     type="text"
                     class="form-control"
@@ -32,17 +32,6 @@
                     th:field="*{singer}"
                     placeholder="Singer">
             <p th:if="${#fields.hasErrors('singer')}" class="text-danger" th:errors="*{singer}"></p>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="photoUrl">PhotoUrl</label>
-            <input
-                    type="text"
-                    class="form-control"
-                    id="photoUrl"
-                    name="photoUrl"
-                    th:field="*{photoUrl}"
-                    placeholder="Photo Url">
-            <p th:if="${#fields.hasErrors('photoUrl')}" class="text-danger" th:errors="*{photoUrl}"></p>
           </div>
           <div class="form-group mb-2">
             <label for="ratio">Ratio</label>
@@ -68,7 +57,7 @@
             <p th:if="${#fields.hasErrors('text')}" class="text-danger" th:errors="*{text}"></p>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="submit" class="btn btn-primary">Edit</button>
       </div>
     </form>
   </section>

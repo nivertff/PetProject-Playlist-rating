@@ -9,8 +9,10 @@ public class PlayListMapper {
                 .id(playListDto.getId())
                 .photoUrl(playListDto.getPhotoUrl())
                 .name(playListDto.getName())
+                .singer(playListDto.getSinger())
                 .ratio(playListDto.getRatio())
                 .text(playListDto.getText())
+                .songSet(playListDto.getSongs())
                 .build();
         return playList;
     }
@@ -19,8 +21,10 @@ public class PlayListMapper {
                 .id(playList.getId())
                 .photoUrl(playList.getPhotoUrl())
                 .name(playList.getName())
+                .singer(playList.getSinger())
                 .ratio(playList.getRatio())
                 .text(playList.getText())
+                .songs(playList.getSongSet())
                 .build();
         return playListDto;
     }
