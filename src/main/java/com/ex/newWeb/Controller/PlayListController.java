@@ -2,6 +2,10 @@ package com.ex.newWeb.Controller;
 
 import com.ex.newWeb.Dto.PlayListDto;
 import com.ex.newWeb.models.PlayList;
+import com.ex.newWeb.models.UserEntity;
+import com.ex.newWeb.security.SecurityUtil;
+import com.ex.newWeb.service.PlayListService;
+import com.ex.newWeb.service.UserService;
 import com.ex.newWeb.service.impl.PlayListServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,24 +18,41 @@ import java.util.List;
 
 @Controller
 public class PlayListController {
-    private PlayListServiceImpl playListService;
+    private PlayListService playListService;
+    private UserService userService;
 
 
     @Autowired
-    public PlayListController(PlayListServiceImpl playListService) {
+    public PlayListController(PlayListService playListService, UserService userService) {
         this.playListService = playListService;
+        this.userService = userService;
     }
 
 
     @GetMapping("/playLists")
     public String listPlayList(Model model){
+        UserEntity user = new UserEntity();
         List<PlayListDto> playLists = playListService.findAllPlayLists();
+        String username = SecurityUtil.getSessionUser();
+        if(username != null){
+            user = userService.findByUsername(username);
+            model.addAttribute("user",user);
+        }
+        model.addAttribute("user",user);
         model.addAttribute("playLists", playLists);
         return "playList-list";
     }
+
     @GetMapping("/playLists/{playListId}")
     public String playListDetail(@PathVariable("playListId") Long playListId, Model model){
+        UserEntity user = new UserEntity();
         PlayListDto playListDto = playListService.findPlayListById(playListId);
+        String username = SecurityUtil.getSessionUser();
+        if(username != null){
+            user = userService.findByUsername(username);
+            model.addAttribute("user",user);
+        }
+        model.addAttribute("user",user);
         model.addAttribute("playList",playListDto);
         return "playList-detail";
     }
@@ -73,8 +94,9 @@ public class PlayListController {
     @PostMapping("/playLists/{playListId}/edit")
     public String updatePlayList(@PathVariable("playListId") Long clubId,
                              @Valid @ModelAttribute("club") PlayListDto playListDto,
-                             BindingResult result){
+                             BindingResult result,Model model){
         if(result.hasErrors()){
+            model.addAttribute("playList", playListDto);
             return "playList-edit";
         }
         playListDto.setId(clubId);

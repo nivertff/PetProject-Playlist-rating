@@ -6,36 +6,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "PlayList")
-public class PlayList {
+public class Song {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String singer;
-    private String photoUrl;
     private Double ratio;
     private String text;
 
     @ManyToOne
-    @JoinColumn(name ="created_by", nullable = false)
-    private UserEntity createdBy;
-    @OneToMany(mappedBy = "playList", cascade = CascadeType.REMOVE)
-    private List<Song> songSet = new ArrayList<>();
-
-
-
-
-
-
-
+    @JoinColumn(name="playList_id", nullable = false)
+    private PlayList playList;
 
 }

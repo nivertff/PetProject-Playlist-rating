@@ -2,8 +2,12 @@ package com.ex.newWeb.Controller;
 
 import com.ex.newWeb.Dto.PlayListDto;
 import com.ex.newWeb.Dto.SongDto;
+import com.ex.newWeb.models.PlayList;
 import com.ex.newWeb.models.Song;
+import com.ex.newWeb.models.UserEntity;
+import com.ex.newWeb.security.SecurityUtil;
 import com.ex.newWeb.service.SongService;
+import com.ex.newWeb.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,26 +17,44 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class SongController {
     private SongService songService;
+    private UserService userService;
 
-    public SongController(SongService songService) {
+    public SongController(SongService songService, UserService userService) {
         this.songService = songService;
+        this.userService = userService;
     }
 
 
     @GetMapping("/songs")
     public String songsList(Model model){
+        UserEntity user = new UserEntity();
         List<SongDto> songs = songService.findAllSongs();
+        String username = SecurityUtil.getSessionUser();
+        if(username != null){
+            user = userService.findByUsername(username);
+            model.addAttribute("user",user);
+        }
+        model.addAttribute("user",user);
         model.addAttribute("songs", songs);
         return "songs-list";
     }
     @GetMapping("/songs/{songId}")
     public String viewSongs(@PathVariable("songId") Long songId, Model model){
+        UserEntity user = new UserEntity();
         SongDto songDto = songService.findPlayListById(songId);
+        String username = SecurityUtil.getSessionUser();
+        if(username != null){
+            user = userService.findByUsername(username);
+            model.addAttribute("user",user);
+        }
+        model.addAttribute("user",user);
+        model.addAttribute("playList",songDto);
         model.addAttribute("song",songDto);
         return "song-detail";
     }
@@ -79,4 +101,7 @@ public class SongController {
         songService.deleteSong(songId);
         return "redirect:/songs";
     }
+
+
+
 }

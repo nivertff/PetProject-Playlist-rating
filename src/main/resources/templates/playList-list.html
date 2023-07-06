@@ -10,13 +10,15 @@
     <!-- Page Content-->
     <section layout:fragment="body" class="py-5">
         <div class="container px-5 my-5">
+            <div th:if="${param.success}" class="alert alert-success">
+                You are registered success!!
+            </div>
             <div class="text-center mb-5">
-                <h1 class="fw-bolder">Runners near you</h1>
-                <p class="lead fw-normal text-muted mb-0">runners found in your area</p>
+                <h1 class="fw-bolder">Playlists</h1>
             </div>
             <div>
                 <form th:action="@{/playLists/search}" class="form-inline my-2 my-lg-0 mb-3">
-                    <input name="query" class="form-control mr-sm-2 mb-5" type="search" placeholder="Search PlayList" aria-label="Search">
+                    <input name="query" class="form-control mr-sm-2 mb-5" type="search" placeholder="Search Playlist" aria-label="Search">
                 </form>
             </div>
             <div class="row gx-5">
@@ -25,12 +27,14 @@
                         <img class="img-fluid rounded-3 mb-3" th:src="${playList.photoUrl}" alt="..." />
                         <a th:text="${playList.name}" class="h2 fw-bolder text-decoration-none link-dark stretched-link" href="#!">Project name</a>
                         <h4 class="card-text" th:text="${playList.singer}"></h4>
-                        <h5 class="card-text">Ratio playList :</h5>
+                        <h5 class="card-text">Rating playlist :</h5>
                         <h4 class="card-text" th:text="${playList.ratio}"></h4>
                     </div>
                     <a class="btn btn-primary" th:href="@{/playLists/{playListId}(playListId=${playList.id})}">View</a>
-                    <a class="btn btn-primary" th:href="@{/playLists/{playListId}/edit(playListId=${playList.id})}">Edit</a>
-                   </div>
+                    <div th:if="${user.id} == ${playList.createdBy.id}">
+                        <a class="btn btn-primary" th:href="@{/playLists/{playListId}/edit(playListId=${playList.id})}">Edit</a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

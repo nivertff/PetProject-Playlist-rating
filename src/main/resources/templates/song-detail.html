@@ -3,7 +3,7 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
         layout:decorate="~{loyout}">
 <head>
-  <title>Club Create</title>
+  <title>About Song</title>
 </head>
 <body class="d-flex flex-column h-100">
 <main class="flex-shrink-0">
@@ -18,10 +18,14 @@
            <div class="card-body">
              <h2 class="fw-bolder" th:text="${song.name}"></h2>
               <h3 class="" th:text="${song.singer}"></h3>
-              <h4 class="card-title">Ratio:</h4>
+              <h4 class="card-title">Rating:</h4>
               <h3 class="card-text" th:text="${song.ratio}"></h3>
-             <h4 class="card-title">Text:</h4>
+             <h4 class="card-title">About:</h4>
               <h5 class="card-text" th:text="${song.text}"></h5>
+               <div th:if="${user.id} == ${song.playList.createdBy.id}">
+                   <a class="btn btn-primary" th:href="@{/sons/{songId}/delete(songId=${song.id})}">Delete</a>
+                   <a th:href="@{/songs/{songId}/edit(songId=${song.id})}" class="btn btn-primary">Edit</a>
+               </div>
             </div>
           </div>
         </div>

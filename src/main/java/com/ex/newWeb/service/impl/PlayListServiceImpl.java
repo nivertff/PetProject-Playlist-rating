@@ -2,7 +2,10 @@ package com.ex.newWeb.service.impl;
 
 import com.ex.newWeb.Dto.PlayListDto;
 import com.ex.newWeb.Repository.PlayListRepository;
+import com.ex.newWeb.Repository.UserRepository;
 import com.ex.newWeb.models.PlayList;
+import com.ex.newWeb.models.UserEntity;
+import com.ex.newWeb.security.SecurityUtil;
 import com.ex.newWeb.service.PlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +21,12 @@ public class PlayListServiceImpl implements PlayListService {
 
 
     private PlayListRepository playListRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public PlayListServiceImpl(PlayListRepository playListRepository) {
+    public PlayListServiceImpl(PlayListRepository playListRepository,UserRepository userRepository) {
         this.playListRepository = playListRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -43,12 +48,19 @@ public class PlayListServiceImpl implements PlayListService {
 
     @Override
     public PlayList savePlayList(PlayListDto playListDto) {
-        return playListRepository.save(mapToPlayList(playListDto));
+        String username = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByUsername(username);
+        PlayList playList = mapToPlayList(playListDto);
+        playList.setCreatedBy(user);
+        return playListRepository.save(playList);
     }
 
     @Override
     public void updatePlayList(PlayListDto playListDto) {
+        String username = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByUsername(username);
         PlayList playList = mapToPlayList(playListDto);
+        playList.setCreatedBy(user);
         playListRepository.save(playList);
     }
 

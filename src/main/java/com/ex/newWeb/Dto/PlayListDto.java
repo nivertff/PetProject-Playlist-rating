@@ -1,6 +1,7 @@
 package com.ex.newWeb.Dto;
 
 import com.ex.newWeb.models.Song;
+import com.ex.newWeb.models.UserEntity;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,13 +18,14 @@ public class PlayListDto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
-    @NotEmpty(message = "RatioList name should not be empty")
+    @NotEmpty(message = "Playlist Name should not be empty")
     private String name;
-    @NotEmpty(message = "RatioList photoUrl should not be empty")
     private String singer;
     private String photoUrl;
     private Double ratio;
     private String text;
-    private List<Song> songs;
+    private List<SongDto> songs;
+    private UserEntity createdBy;
+
 
 }

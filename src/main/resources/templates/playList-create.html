@@ -12,7 +12,7 @@
       <div class="container">
         <div class="form-row">
           <div class="form-group col-md6">
-            <label for="name">Name PlayList</label>
+            <label for="name">Name Playlist</label>
             <input
                     type="text"
                     class="form-control"
@@ -33,8 +33,8 @@
                     placeholder="Singer">
             <p th:if="${#fields.hasErrors('singer')}" class="text-danger" th:errors="*{singer}"></p>
           </div>
-          <div class="form-group col-md-6">
-            <label for="photoUrl">PhotoUrl</label>
+          <div class="form-group col-md6">
+            <label for="photoUrl">Photo Url</label>
             <input
                     type="text"
                     class="form-control"
@@ -45,7 +45,7 @@
             <p th:if="${#fields.hasErrors('photoUrl')}" class="text-danger" th:errors="*{photoUrl}"></p>
           </div>
           <div class="form-group mb-2">
-            <label for="ratio">Ratio</label>
+            <label for="ratio">Rating</label>
             <input
                     type="number"
                     step="any"
@@ -53,7 +53,9 @@
                     id="ratio"
                     name="ratio"
                     th:field="*{ratio}"
-                    placeholder="Ratio">
+                    placeholder="Ratio"
+                    min="0"
+                    max="10">
             <p th:if="${#fields.hasErrors('ratio')}" class="text-danger" th:errors="*{ratio}"></p>
           </div>
           <div class="form-group mb-2">

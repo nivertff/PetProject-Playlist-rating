@@ -3,7 +3,7 @@
         xmlns:layout ="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{loyout}">
 <head>
-  <title>Club Create</title>
+  <title>Song Edit</title>
 </head>
 <body class="d-flex flex-column h-100">
 <main class="flex-shrink-0">
@@ -12,7 +12,7 @@
       <div class="container">
         <div class="form-row">
           <div class="form-group col-md6">
-            <label for="name">Name track</label>
+            <label for="name">Name song</label>
             <input
                     type="text"
                     class="form-control"
@@ -34,7 +34,7 @@
             <p th:if="${#fields.hasErrors('singer')}" class="text-danger" th:errors="*{singer}"></p>
           </div>
           <div class="form-group mb-2">
-            <label for="ratio">Ratio</label>
+            <label for="ratio">Rating</label>
             <input
                     type="number"
                     step="any"
@@ -42,7 +42,9 @@
                     id="ratio"
                     name="ratio"
                     th:field="*{ratio}"
-                    placeholder="Ratio">
+                    placeholder="Ratio"
+                    min="0"
+                    max="10">
             <p th:if="${#fields.hasErrors('ratio')}" class="text-danger" th:errors="*{ratio}"></p>
           </div>
           <div class="form-group mb-2">

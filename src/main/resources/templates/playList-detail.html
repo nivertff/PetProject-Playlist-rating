@@ -3,7 +3,7 @@
         xmlns:layout ="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{loyout}">
 <head>
-  <title>PlayList Detail</title>
+  <title>Playlist Detail</title>
 </head>
 <body class="d-flex flex-column h-100">
 <main class="flex-shrink-0">
@@ -25,25 +25,29 @@
           <div class="card mb-4">
             <a><img class="card-img-top" th:src="${playList.photoUrl}" alt="..." /></a>
             <div class="card-body">
-              <h2 class="card-title">About playList</h2>
+              <h2 class="card-title">About playlist</h2>
               <p class="card-text" th:text="${playList.text}"></p>
-              <h2 class="card-text">Ratio playList :</h2>
-              <p class="card-text" th:text="${playList.ratio}"></p>
-              <a class="btn btn-primary" th:href="@{/playLists/{playListId}/delete(playListId=${playList.id})}">Delete</a>
-              <a class="btn btn-primary" th:href="@{/songs/{playListId}/new(playListId=${playList.id})}">Add Song</a>
+              <h2 class="card-text">Rating playlist :</h2>
+              <h5 class="card-text"  th:text="${playList.ratio}"></h5>
+              <div th:if="${user.id} == ${playList.createdBy.id}">
+               <a class="btn btn-primary" th:href="@{/playLists/{playListId}/delete(playListId=${playList.id})}">Delete</a>
+               <a class="btn btn-primary" th:href="@{/songs/{playListId}/new(playListId=${playList.id})}">Add Song</a>
+              </div>
             </div>
           </div>
           <!-- Nested row for non-featured blog posts-->
           <div class="row">
-            <div class="col-lg-10">
+            <div class="col-lg-6">
               <div th:each="song : ${playList.songs}" class="card mb-4">
-                 <div class="position-relative mb-3">
-                  <a th:text="${song.name}" class="h3 fw-bolder text-decoration-none link-dark stretched-link" ></a>
-                  <h4 class="card-text" th:text="${song.singer}"></h4>
-                   <h5 class="card-text" style="display: inline;">Ratio song :</h5>
-                   <h5 class="card-text" style="display: inline;" th:text="${song.ratio}"></h5>
+                <div class="card-body">
+                  <h3 class="fw-bolder text-decoration-none link-dark">
+                    <a th:text="${song.name}" alt="..."></a>
+                  </h3>
+                  <h4 th:text="${song.singer}" class="card-title h4"></h4>
+                  <h5 class="card-text" style="display: inline;">Rating song :</h5>
+                  <h5 class="card-text"  th:text="${song.ratio}"></h5>
+                  <a class="btn btn-primary" th:href="@{/songs/{songId}(songId=${song.id})}">More →</a>
                 </div>
-          <!-- Pagination-->
               </div>
             </div>
           </div>

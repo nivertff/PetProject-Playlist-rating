@@ -2,6 +2,13 @@ package com.ex.newWeb.mapper;
 
 import com.ex.newWeb.Dto.PlayListDto;
 import com.ex.newWeb.models.PlayList;
+import com.ex.newWeb.models.Song;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.ex.newWeb.mapper.SongMapper.mapToSong;
+import static com.ex.newWeb.mapper.SongMapper.mapToSongDto;
 
 public class PlayListMapper {
     public static PlayList mapToPlayList(PlayListDto playListDto){
@@ -12,7 +19,7 @@ public class PlayListMapper {
                 .singer(playListDto.getSinger())
                 .ratio(playListDto.getRatio())
                 .text(playListDto.getText())
-                .songSet(playListDto.getSongs())
+                .createdBy(playListDto.getCreatedBy())
                 .build();
         return playList;
     }
@@ -24,9 +31,12 @@ public class PlayListMapper {
                 .singer(playList.getSinger())
                 .ratio(playList.getRatio())
                 .text(playList.getText())
-                .songs(playList.getSongSet())
+                .createdBy(playList.getCreatedBy())
+                .songs(playList.getSongSet().stream().map(song -> mapToSongDto(song)).collect(Collectors.toList()))
                 .build();
         return playListDto;
     }
+
+
 
 }
