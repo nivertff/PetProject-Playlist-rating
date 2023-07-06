@@ -1,0 +1,13 @@
+Playlist-rating
+
+Playlist-rating is a local website developed using 
+Java, HTML and CSS. The main idea of ​​this site is the ability to create playlists 
+or albums and add songs to them for further evaluation.
+
+Functional capabilities:
+-Registration and login to the user account.
+-Create and manage playlists or albums.
+-Adding songs to playlists or albums.
+-Rating songs.
+-View song rating history.
+-Search for playlist by title.
