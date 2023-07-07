@@ -24,18 +24,13 @@ public class PlayList {
     private String photoUrl;
     private Double ratio;
     private String text;
+    private Double avgRatio;
+
 
     @ManyToOne
     @JoinColumn(name ="created_by", nullable = false)
     private UserEntity createdBy;
     @OneToMany(mappedBy = "playList", cascade = CascadeType.REMOVE)
     private List<Song> songSet = new ArrayList<>();
-
-
-
-
-
-
-
 
 }

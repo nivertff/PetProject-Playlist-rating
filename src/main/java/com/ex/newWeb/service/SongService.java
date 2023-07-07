@@ -14,7 +14,7 @@ public interface SongService {
 
     SongDto findBySongId(Long songId);
 
-    void updateClub(SongDto songDto);
+    void updateSong(SongDto songDto);
 
     void deleteSong(Long songId);
 }

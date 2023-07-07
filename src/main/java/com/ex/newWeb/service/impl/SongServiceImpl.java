@@ -26,6 +26,7 @@ public class SongServiceImpl implements SongService {
     }
 
 
+
     @Override
     public List<SongDto> findAllSongs() {
         List<Song> songs = songRepository.findAll();
@@ -53,7 +54,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public void updateClub(SongDto songDto) {
+    public void updateSong(SongDto songDto) {
         Song song = mapToSong(songDto);
         songRepository.save(song);
     }

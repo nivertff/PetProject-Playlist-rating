@@ -93,10 +93,10 @@ public class SongController {
         SongDto eventDto = songService.findBySongId(songId);
         songDto.setId(songId);
         songDto.setPlayList( eventDto.getPlayList());
-        songService.updateClub(songDto);
+        songService.updateSong(songDto);
         return "redirect:/songs";
     }
-    @GetMapping("/songs/{songsId}/delete")
+    @GetMapping("/songs/{songId}/delete")
     public String songDelete(@PathVariable("songId") Long songId){
         songService.deleteSong(songId);
         return "redirect:/songs";

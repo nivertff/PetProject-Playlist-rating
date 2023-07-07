@@ -38,8 +38,13 @@ public class PlayListServiceImpl implements PlayListService {
     @Override
     public PlayListDto findPlayListById(Long playListId) {
         PlayList playList = playListRepository.findById(playListId).get();
+        Double f = playList.getSongSet().stream().map(son -> son.getRatio())
+                .mapToDouble(Double::doubleValue).average().orElse(0.0);
+        playList.setAvgRatio(Math.round(f * 100.0) / 100.0);
+        playListRepository.save(playList);
         return mapToPlayListDto(playList);
     }
+
 
     @Override
     public void delete(Long playListId) {
@@ -69,4 +74,6 @@ public class PlayListServiceImpl implements PlayListService {
         List<PlayList> playLists = playListRepository.searchClubs(query);
         return playLists.stream().map(playList -> mapToPlayListDto(playList)).collect(Collectors.toList());
     }
+
+
 }

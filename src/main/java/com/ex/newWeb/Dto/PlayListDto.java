@@ -26,6 +26,7 @@ public class PlayListDto {
     private String text;
     private List<SongDto> songs;
     private UserEntity createdBy;
+    private Double avgRatio;
 
 
 }
