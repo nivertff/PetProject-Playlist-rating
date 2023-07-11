@@ -6,7 +6,6 @@ import com.ex.newWeb.models.UserEntity;
 import com.ex.newWeb.security.SecurityUtil;
 import com.ex.newWeb.service.PlayListService;
 import com.ex.newWeb.service.UserService;
-import com.ex.newWeb.service.impl.PlayListServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +30,15 @@ public class PlayListController {
 
     @GetMapping("/playLists")
     public String listPlayList(Model model){
+        List<PlayListDto> playLists = playListService.findYourPlayLists();
+
+        model.addAttribute("playLists", playLists);
+        return "playList-list";
+    }
+
+    @GetMapping("/home")
+    public String listAllPlayList(Model model){
+
         UserEntity user = new UserEntity();
         List<PlayListDto> playLists = playListService.findAllPlayLists();
         String username = SecurityUtil.getSessionUser();
@@ -40,7 +48,14 @@ public class PlayListController {
         }
         model.addAttribute("user",user);
         model.addAttribute("playLists", playLists);
-        return "playList-list";
+        return "all-playlist-list";
+    }
+
+    @GetMapping("/home/search")
+    public String searchAllPlayList(@RequestParam(value = "query") String query, Model model){
+        List<PlayListDto> playLists = playListService.searchAllPlayList(query);
+        model.addAttribute("playLists", playLists);
+        return "all-playlist-list";
     }
 
     @GetMapping("/playLists/{playListId}")
@@ -58,7 +73,7 @@ public class PlayListController {
     }
     @GetMapping("/playLists/search")
     public String seachPlayList(@RequestParam(value = "query") String query, Model model){
-        List<PlayListDto> playLists = playListService.searchClubs(query);
+        List<PlayListDto> playLists = playListService.searchPlayList(query);
         model.addAttribute("playLists", playLists);
         return "playList-list";
     }
@@ -75,6 +90,7 @@ public class PlayListController {
         playListService.delete(playListId);
         return "redirect:/playLists";
     }
+
     @PostMapping("/playLists/new")
     public String savePlayList(@Valid @ModelAttribute("playList") PlayListDto playListDto,
                            BindingResult result, Model model){
@@ -85,12 +101,15 @@ public class PlayListController {
         playListService.savePlayList(playListDto);
         return "redirect:/playLists";
     }
+
     @GetMapping("/playLists/{playListId}/edit")
     public String editPlayListForm(@PathVariable("playListId") Long playListId, Model model){
         PlayListDto playListDto = playListService.findPlayListById(playListId);
         model.addAttribute("playList", playListDto);
         return "playList-edit";
     }
+
+
     @PostMapping("/playLists/{playListId}/edit")
     public String updatePlayList(@PathVariable("playListId") Long clubId,
                              @Valid @ModelAttribute("club") PlayListDto playListDto,

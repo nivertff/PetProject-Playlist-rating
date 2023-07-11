@@ -18,6 +18,8 @@ public interface PlayListService {
 
     void updatePlayList(PlayListDto playListDto);
 
-    List<PlayListDto> searchClubs(String query);
+    List<PlayListDto> searchAllPlayList(String query);
 
+    List<PlayListDto> findYourPlayLists();
+    List<PlayListDto> searchPlayList(String query);
 }

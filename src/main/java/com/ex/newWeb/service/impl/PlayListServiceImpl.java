@@ -45,6 +45,13 @@ public class PlayListServiceImpl implements PlayListService {
         return mapToPlayListDto(playList);
     }
 
+    @Override
+    public List<PlayListDto> findYourPlayLists() {
+        String username = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByUsername(username);
+        List<PlayList> playLists = playListRepository.findByCreatedBy(user);
+        return playLists.stream().map((playList) -> mapToPlayListDto(playList)).collect(Collectors.toList());
+    }
 
     @Override
     public void delete(Long playListId) {
@@ -70,7 +77,15 @@ public class PlayListServiceImpl implements PlayListService {
     }
 
     @Override
-    public List<PlayListDto> searchClubs(String query) {
+    public List<PlayListDto> searchPlayList(String query) {
+        List<PlayList> playLists = playListRepository.searchClubs(query);
+        String username = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByUsername(username);
+        playLists = playLists.stream().filter(playList -> playList.getCreatedBy() == user).collect(Collectors.toList());
+        return playLists.stream().map(playList -> mapToPlayListDto(playList)).collect(Collectors.toList());
+    }
+    @Override
+    public List<PlayListDto> searchAllPlayList(String query) {
         List<PlayList> playLists = playListRepository.searchClubs(query);
         return playLists.stream().map(playList -> mapToPlayListDto(playList)).collect(Collectors.toList());
     }
