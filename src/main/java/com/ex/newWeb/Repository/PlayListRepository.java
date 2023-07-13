@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface PlayListRepository extends JpaRepository<PlayList,Long> {
     Optional<PlayList> findByName(String url);
-    @Query("SELECT c from PlayList c WHERE c.name LIKE CONCAT('%', :query, '%')")
+    @Query("SELECT c from playLists c WHERE c.name LIKE CONCAT('%', :query, '%')")
     List<PlayList> searchClubs(String query);
 
     List<PlayList> findByCreatedBy(UserEntity user);

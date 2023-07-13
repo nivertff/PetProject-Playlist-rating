@@ -21,5 +21,6 @@ public interface PlayListService {
     List<PlayListDto> searchAllPlayList(String query);
 
     List<PlayListDto> findYourPlayLists();
+
     List<PlayListDto> searchPlayList(String query);
 }

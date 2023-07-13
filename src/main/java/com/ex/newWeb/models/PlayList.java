@@ -13,8 +13,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "PlayList")
+@Entity(name ="playLists")
+@Table(name = "PlayLists")
 public class PlayList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,8 @@ public class PlayList {
     @ManyToOne
     @JoinColumn(name ="created_by", nullable = false)
     private UserEntity createdBy;
-    @OneToMany(mappedBy = "playList", cascade = CascadeType.REMOVE)
-    private List<Song> songSet = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "playLists")
+    private List<Song> song = new ArrayList<>();
 
 }

@@ -5,6 +5,11 @@ import com.ex.newWeb.Dto.SongDto;
 import com.ex.newWeb.models.PlayList;
 import com.ex.newWeb.models.Song;
 
+import java.util.stream.Collectors;
+
+import static com.ex.newWeb.mapper.PlayListMapper.mapToPlayList;
+import static com.ex.newWeb.mapper.PlayListMapper.mapToPlayListDto;
+
 public class SongMapper {
     public static Song mapToSong(SongDto songDto){
         Song song = Song.builder()
@@ -12,8 +17,8 @@ public class SongMapper {
                 .id(songDto.getId())
                 .ratio(songDto.getRatio())
                 .singer(songDto.getSinger())
-                .playList(songDto.getPlayList())
                 .text(songDto.getText())
+                .createdBy(songDto.getCreatedBy())
                 .build();
         return song;
     }
@@ -23,8 +28,8 @@ public class SongMapper {
                 .id(song.getId())
                 .ratio(song.getRatio())
                 .singer(song.getSinger())
-                .playList(song.getPlayList())
                 .text(song.getText())
+                .createdBy(song.getCreatedBy())
                 .build();
         return songDto;
     }

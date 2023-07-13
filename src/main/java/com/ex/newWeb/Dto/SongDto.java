@@ -1,6 +1,7 @@
 package com.ex.newWeb.Dto;
 
 import com.ex.newWeb.models.PlayList;
+import com.ex.newWeb.models.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -19,6 +22,8 @@ public class SongDto {
     private String singer;
     private Double ratio;
     private String text;
-    private PlayList playList;
+    private UserEntity createdBy;
+    List<PlayListDto> playLists = new ArrayList<>();
+
 
 }

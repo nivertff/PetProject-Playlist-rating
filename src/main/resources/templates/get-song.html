@@ -1,0 +1,39 @@
+<html
+        xmlns:th="http://thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+        layout:decorate="~{loyout}">
+<head>
+    <title>Songs</title>
+</head>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+    <!-- Page Content-->
+    <section layout:fragment="body" class="py-5">
+        <form role="form" method="post" th:action="@{/songs/{playListId}(playListId=${playListId})}" th:object = ${song}>
+        <div class="container px-5 my-5">
+            <div class="text-center mb-5">
+                <h1 class="fw-bolder">All songs</h1>
+            </div>
+            <div>
+                <form th:action="@{/songs/search}" class="form-inline my-2 my-lg-0 mb-3">
+                    <input name="query" class="form-control mr-sm-2 mb-5" type="search" placeholder="Search Song" aria-label="Search">
+                </form>
+                <div class="row gx-5">
+                    <div th:each="song :${songs}" class="col-lg-6 mb-2">
+                       <div class="position-relative mb-3">
+                            <a th:text="${song.name}" class="h3 fw-bolder text-decoration-none link-dark stretched-link" href="#!"></a>
+                            <h4 class="card-text" th:text="${song.singer}"></h4>
+                            <h5 class="card-text">Ratio song :</h5>
+                            <h4 class="card-text" th:text="${song.ratio}"></h4>
+                        </div>
+                        <button type="submit" class="btn btn-primary">add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </section>
+</main>
+<!-- Footer-->
+</body>
+</html>

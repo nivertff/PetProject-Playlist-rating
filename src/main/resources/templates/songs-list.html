@@ -13,6 +13,10 @@
       <div class="text-center mb-5">
         <h1 class="fw-bolder">All songs</h1>
       </div>
+    <div>
+    <form th:action="@{/songs/search}" class="form-inline my-2 my-lg-0 mb-3">
+      <input name="query" class="form-control mr-sm-2 mb-5" type="search" placeholder="Search Song" aria-label="Search">
+    </form>
       <div class="row gx-5">
         <div th:each="song :${songs}" class="col-lg-6 mb-2">
           <div class="position-relative mb-3">
@@ -24,6 +28,7 @@
           <a th:href="@{/songs/{songId}(songId=${song.id})}" class="btn btn-primary">View</a>
         </div>
       </div>
+    </div>
     </div>
   </section>
 </main>

@@ -1,10 +1,12 @@
 package com.ex.newWeb.Controller;
 
 import com.ex.newWeb.Dto.PlayListDto;
+import com.ex.newWeb.Dto.SongDto;
 import com.ex.newWeb.models.PlayList;
 import com.ex.newWeb.models.UserEntity;
 import com.ex.newWeb.security.SecurityUtil;
 import com.ex.newWeb.service.PlayListService;
+import com.ex.newWeb.service.SongService;
 import com.ex.newWeb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,12 +21,14 @@ import java.util.List;
 public class PlayListController {
     private PlayListService playListService;
     private UserService userService;
+    private SongService songService;
 
 
     @Autowired
-    public PlayListController(PlayListService playListService, UserService userService) {
+    public PlayListController(SongService songService, PlayListService playListService, UserService userService) {
         this.playListService = playListService;
         this.userService = userService;
+        this.songService = songService;
     }
 
 
@@ -72,7 +76,7 @@ public class PlayListController {
         return "playList-detail";
     }
     @GetMapping("/playLists/search")
-    public String seachPlayList(@RequestParam(value = "query") String query, Model model){
+    public String searchPlayList(@RequestParam(value = "query") String query, Model model){
         List<PlayListDto> playLists = playListService.searchPlayList(query);
         model.addAttribute("playLists", playLists);
         return "playList-list";
@@ -111,17 +115,19 @@ public class PlayListController {
 
 
     @PostMapping("/playLists/{playListId}/edit")
-    public String updatePlayList(@PathVariable("playListId") Long clubId,
-                             @Valid @ModelAttribute("club") PlayListDto playListDto,
+    public String updatePlayList(@PathVariable("playListId") Long playListId,
+                             @Valid @ModelAttribute("playList") PlayListDto playListDto,
                              BindingResult result,Model model){
         if(result.hasErrors()){
             model.addAttribute("playList", playListDto);
             return "playList-edit";
         }
-        playListDto.setId(clubId);
+        playListDto.setId(playListId);
         playListService.updatePlayList(playListDto);
         return "redirect:/playLists";
     }
+
+
 
 
 

@@ -28,6 +28,8 @@
                         <h4 class="card-text" th:text="${playList.singer}"></h4>
                         <h5 class="card-text">Rating playlist :</h5>
                         <h4 class="card-text" th:text="${playList.ratio}"></h4>
+                        <h5 class="card-text">Created by :</h5>
+                        <h4 class="card-text" th:text="${playList.createdBy.username}"></h4>
                     </div>
                      <a class="btn btn-primary" th:href="@{/playLists/{playListId}(playListId=${playList.id})}">View</a>
                         <a class="btn btn-primary" th:href="@{/playLists/{playListId}/edit(playListId=${playList.id})}">Edit</a>
