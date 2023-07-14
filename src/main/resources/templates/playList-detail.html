@@ -48,7 +48,10 @@
                   <h4 th:text="${song.singer}" class="card-title h4"></h4>
                   <h5 class="card-text" style="display: inline;">Rating song :</h5>
                   <h5 class="card-text"  th:text="${song.ratio}"></h5>
-                  <a class="btn btn-primary" th:href="@{/songs/{songId}(songId=${song.id})}">More →</a>
+                  <a class="btn btn-primary" th:href="@{/songs/{songId}(songId=${song.id})}">More</a>
+                  <div th:if="${user.id} == ${playList.createdBy.id}">
+                    <a th:href="@{/songs/{playListId}/remove/{songId}(playListId=${playListId},songId=${song.id})}" class="btn btn-primary" th:method="post">delete</a>
+                    <div th:if="${user.id} == ${playList.createdBy.id}">
                 </div>
               </div>
             </div>

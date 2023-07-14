@@ -9,7 +9,6 @@
 <main class="flex-shrink-0">
     <!-- Page Content-->
     <section layout:fragment="body" class="py-5">
-        <form role="form" method="post" th:action="@{/songs/{playListId}(playListId=${playListId})}" th:object = ${song}>
         <div class="container px-5 my-5">
             <div class="text-center mb-5">
                 <h1 class="fw-bolder">All songs</h1>
@@ -26,7 +25,7 @@
                             <h5 class="card-text">Ratio song :</h5>
                             <h4 class="card-text" th:text="${song.ratio}"></h4>
                         </div>
-                        <button type="submit" class="btn btn-primary">add</button>
+                        <a th:href="@{/songs/{playListId}/addSong/{songId}(playListId=${playListId},songId=${song.id})}" class="btn btn-primary" th:method="post">add</a>
                     </div>
                 </div>
             </div>

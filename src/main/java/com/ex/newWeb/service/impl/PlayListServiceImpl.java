@@ -4,12 +4,14 @@ import com.ex.newWeb.Dto.PlayListDto;
 import com.ex.newWeb.Repository.PlayListRepository;
 import com.ex.newWeb.Repository.UserRepository;
 import com.ex.newWeb.models.PlayList;
+import com.ex.newWeb.models.Song;
 import com.ex.newWeb.models.UserEntity;
 import com.ex.newWeb.security.SecurityUtil;
 import com.ex.newWeb.service.PlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +40,9 @@ public class PlayListServiceImpl implements PlayListService {
     @Override
     public PlayListDto findPlayListById(Long playListId) {
         PlayList playList = playListRepository.findById(playListId).get();
+        Double f = playList.getSong().stream().map(son -> son.getRatio())
+                .mapToDouble(Double::doubleValue).average().orElse(0.0);
+        playList.setAvgRatio(Math.round(f * 100.0) / 100.0);
         playListRepository.save(playList);
         return mapToPlayListDto(playList);
     }
@@ -52,6 +57,11 @@ public class PlayListServiceImpl implements PlayListService {
 
     @Override
     public void delete(Long playListId) {
+        PlayList playList = playListRepository.findById(playListId).get();
+        if(playList.getSong() != null){
+            playList.setSong(new ArrayList<>());
+        }
+        playListRepository.save(playList);
         playListRepository.deleteById(playListId);
     }
 

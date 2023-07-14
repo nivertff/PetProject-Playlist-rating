@@ -15,7 +15,8 @@ public interface SongService {
     void updateSong(SongDto songDto);
     List<SongDto> searchSong(String query);
     List<SongDto> searchAllSong(String query);
+    void addSongPlayList(Long songId, Long playListId);
+    void deleteSongPlayList(Long songId, Long playListId);
 
-    void saveSongPlayList(SongDto songDto, Long playListId);
 }
 

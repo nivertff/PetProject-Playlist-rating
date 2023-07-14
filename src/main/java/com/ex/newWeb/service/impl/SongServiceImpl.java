@@ -12,6 +12,7 @@ import com.ex.newWeb.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,6 +55,11 @@ public class SongServiceImpl implements SongService {
     }
     @Override
     public void deleteSong(Long songId) {
+        Song song = songRepository.findById(songId).get();
+        if(song.getPlayLists() != null){
+            song.setPlayLists(new ArrayList<>());
+        }
+        songRepository.save(song);
         songRepository.deleteById(songId);
     }
 
@@ -64,34 +70,6 @@ public class SongServiceImpl implements SongService {
         Song song = mapToSong(songDto);
         song.setCreatedBy(user);
         return songRepository.save(song);
-    }
-
-    @Override
-    public void saveSongPlayList(SongDto songDto, Long playListId){
-        String username = SecurityUtil.getSessionUser();
-        UserEntity user = userRepository.findByUsername(username);
-
-
-        PlayList playList = playListRepository.findById(playListId).get();
-        Song song = mapToSong(songDto);
-
-        List<PlayList> playLists = song.getPlayLists();
-        playLists.add(playList);
-        song.setPlayLists(playLists);
-
-        List<Song> songs = playList.getSong();
-        songs.add(song);
-        playList.setSong(songs);
-
-        song.setCreatedBy(user);
-        playList.setCreatedBy(user);
-
-        playListRepository.save(playList);
-        songRepository.save(song);
-
-
-
-
     }
 
 
@@ -116,6 +94,56 @@ public class SongServiceImpl implements SongService {
     public List<SongDto> searchAllSong(String query) {
         List<Song> songs = songRepository.searchSong(query);
         return songs.stream().map(song -> mapToSongDto(song)).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public void addSongPlayList(Long songId, Long playListId) {
+        String username = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByUsername(username);
+
+        Song song = songRepository.findById(songId).get();
+        PlayList playList = playListRepository.findById(playListId).get();
+
+        List<PlayList> playLists = song.getPlayLists();
+        playLists.add(playList);
+        song.setPlayLists(playLists);
+
+        List<Song> songs = playList.getSong();
+        songs.add(song);
+        playList.setSong(songs);
+
+
+        song.setCreatedBy(user);
+        playList.setCreatedBy(user);
+        playListRepository.save(playList);
+        songRepository.save(song);
+
+
+    }
+    @Override
+    public void deleteSongPlayList(Long songId, Long playListId) {
+        String username = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByUsername(username);
+
+        Song song = songRepository.findById(songId).get();
+        PlayList playList = playListRepository.findById(playListId).get();
+
+        List<PlayList> playLists = song.getPlayLists();
+        playLists.remove(playList);
+        song.setPlayLists(playLists);
+
+        List<Song> songs = playList.getSong();
+        songs.remove(song);
+        playList.setSong(songs);
+
+
+        song.setCreatedBy(user);
+        playList.setCreatedBy(user);
+        playListRepository.save(playList);
+        songRepository.save(song);
+
+
     }
 
 

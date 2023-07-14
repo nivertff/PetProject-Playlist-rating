@@ -24,6 +24,9 @@
             <h4 class="card-text" th:text="${song.singer}"></h4>
             <h5 class="card-text">Ratio song :</h5>
             <h4 class="card-text" th:text="${song.ratio}"></h4>
+            <h5 class="card-text">Created By:</h5>
+            <h4 class="card-text" th:text="${song.createdBy.username}"></h4>
+
           </div>
           <a th:href="@{/songs/{songId}(songId=${song.id})}" class="btn btn-primary">View</a>
         </div>

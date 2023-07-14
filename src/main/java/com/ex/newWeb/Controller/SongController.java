@@ -9,6 +9,7 @@ import com.ex.newWeb.security.SecurityUtil;
 import com.ex.newWeb.service.SongService;
 import com.ex.newWeb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -120,26 +121,30 @@ public class SongController {
         return "redirect:/songs";
     }
 
+
+
     @GetMapping("/songs/{playListId}/addSong")
-    public String addSongInPlayList(@PathVariable("playListId") Long playListId, Model model){
+    public String addSongPlayList(@PathVariable("playListId") Long playListId, Model model){
         List<SongDto> songs = songService.findYourSongs();
-        model.addAttribute("songs", songs);
         model.addAttribute("playListId", playListId);
+        model.addAttribute("songs", songs);
         return "get-song";
     }
-
-
-    @PostMapping("/songs/{playListId}")
-    public String saveSongInPlayList(@PathVariable("playListId")Long playListId,
-                                     @ModelAttribute("song") SongDto songDto,
-                                     BindingResult result, Model model){
-        if(result.hasErrors()){
-            model.addAttribute("song", songDto);
-            return "playList-create";
-        }
-        songService.saveSongPlayList(songDto,playListId);
+    @GetMapping("/songs/{playListId}/addSong/{songId}")
+    public String addSongToPlayList(@PathVariable("playListId") Long playListId,
+                                    @PathVariable("songId") Long songId, Model model){
+        songService.addSongPlayList(songId,playListId);
         return "redirect:/playLists/" + playListId;
     }
+
+    @GetMapping("/songs/{playListId}/remove/{songId}")
+    public String deleteSongPlayList(@PathVariable("playListId") Long playListId,
+                                     @PathVariable("songId") Long songId, Model model){
+        songService.deleteSongPlayList(songId,playListId);
+        return "redirect:/playLists/" + playListId;
+    }
+
+
 
 
 }

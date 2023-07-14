@@ -21,7 +21,6 @@ public class PlayListMapper {
                 .text(playListDto.getText())
                 .avgRatio(playListDto.getAvgRatio())
                 .createdBy(playListDto.getCreatedBy())
-                .song(playListDto.getSongs().stream().map(songDto -> mapToSong(songDto)).collect(Collectors.toList()))
                 .build();
         return playList;
     }
