@@ -90,7 +90,7 @@ public class PlayListController {
     }
 
     @GetMapping("/playLists/{playListId}/delete")
-    public String playListDelete(@PathVariable("playListId") Long playListId, Model model){
+    public String deletePlayList(@PathVariable("playListId") Long playListId){
         playListService.delete(playListId);
         return "redirect:/playLists";
     }

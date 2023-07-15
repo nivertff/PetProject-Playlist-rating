@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,6 @@ public class Song {
     private String name;
     private String singer;
     private Double ratio;
-    private String text;
 
 
 

@@ -17,7 +17,6 @@ public class SongMapper {
                 .id(songDto.getId())
                 .ratio(songDto.getRatio())
                 .singer(songDto.getSinger())
-                .text(songDto.getText())
                 .createdBy(songDto.getCreatedBy())
                 .build();
         return song;
@@ -28,7 +27,6 @@ public class SongMapper {
                 .id(song.getId())
                 .ratio(song.getRatio())
                 .singer(song.getSinger())
-                .text(song.getText())
                 .createdBy(song.getCreatedBy())
                 .build();
         return songDto;

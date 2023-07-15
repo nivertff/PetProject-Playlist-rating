@@ -23,7 +23,6 @@ public class PlayList {
     private String singer;
     private String photoUrl;
     private Double ratio;
-    private String text;
     private Double avgRatio;
 
 

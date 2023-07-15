@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +20,12 @@ import java.util.List;
 @AllArgsConstructor
 public class SongDto {
     private Long id;
+    @NotEmpty(message = "Song Name should not be empty")
     private String name;
+    @NotEmpty(message = "Song Singer should not be empty")
     private String singer;
+    @NotNull(message = "Song Rating should not be empty")
     private Double ratio;
-    private String text;
     private UserEntity createdBy;
     List<PlayListDto> playLists = new ArrayList<>();
 

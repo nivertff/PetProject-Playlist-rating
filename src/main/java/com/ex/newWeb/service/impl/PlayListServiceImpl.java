@@ -8,6 +8,7 @@ import com.ex.newWeb.models.Song;
 import com.ex.newWeb.models.UserEntity;
 import com.ex.newWeb.security.SecurityUtil;
 import com.ex.newWeb.service.PlayListService;
+import com.ex.newWeb.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +25,13 @@ public class PlayListServiceImpl implements PlayListService {
 
     private PlayListRepository playListRepository;
     private UserRepository userRepository;
+    private SongService songService;
 
     @Autowired
-    public PlayListServiceImpl(PlayListRepository playListRepository,UserRepository userRepository) {
+    public PlayListServiceImpl(SongService songService,PlayListRepository playListRepository,UserRepository userRepository) {
         this.playListRepository = playListRepository;
         this.userRepository = userRepository;
+        this.songService = songService;
     }
 
     @Override
@@ -58,10 +61,16 @@ public class PlayListServiceImpl implements PlayListService {
     @Override
     public void delete(Long playListId) {
         PlayList playList = playListRepository.findById(playListId).get();
-        if(playList.getSong() != null){
+        if(playList.getSong() != null) {
+            List<Song> songs = playList.getSong();
+            for (Song song : songs) {
+                List<PlayList> playLists = song.getPlayLists();
+                playLists.remove(playList);
+                song.setPlayLists(playLists);
+            }
             playList.setSong(new ArrayList<>());
+            playListRepository.save(playList);
         }
-        playListRepository.save(playList);
         playListRepository.deleteById(playListId);
     }
 

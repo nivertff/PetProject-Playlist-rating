@@ -56,9 +56,7 @@ public class SongServiceImpl implements SongService {
     @Override
     public void deleteSong(Long songId) {
         Song song = songRepository.findById(songId).get();
-        if(song.getPlayLists() != null){
-            song.setPlayLists(new ArrayList<>());
-        }
+        song.setPlayLists(new ArrayList<>());
         songRepository.save(song);
         songRepository.deleteById(songId);
     }

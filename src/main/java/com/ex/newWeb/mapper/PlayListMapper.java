@@ -18,7 +18,6 @@ public class PlayListMapper {
                 .name(playListDto.getName())
                 .singer(playListDto.getSinger())
                 .ratio(playListDto.getRatio())
-                .text(playListDto.getText())
                 .avgRatio(playListDto.getAvgRatio())
                 .createdBy(playListDto.getCreatedBy())
                 .build();
@@ -31,7 +30,6 @@ public class PlayListMapper {
                 .name(playList.getName())
                 .singer(playList.getSinger())
                 .ratio(playList.getRatio())
-                .text(playList.getText())
                 .avgRatio(playList.getAvgRatio())
                 .createdBy(playList.getCreatedBy())
                 .songs(playList.getSong().stream().map(song -> mapToSongDto(song)).collect(Collectors.toList()))
