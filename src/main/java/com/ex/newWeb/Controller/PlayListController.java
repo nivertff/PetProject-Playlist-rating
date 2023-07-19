@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -127,6 +128,25 @@ public class PlayListController {
         return "redirect:/playLists";
     }
 
+
+
+
+    @PostMapping("addFile")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            // Обробка ситуації, коли файл не був вибраний
+            return "redirect:/playLists?error";
+        }
+
+        try {
+            playListService.processCSV(file);
+            // Обробка успішного завершення обробки файлу
+            return "redirect:/playLists?success";
+        } catch (Exception e) {
+            // Обробка помилки при обробці файлу
+            return "redirect:/playLists?error";
+        }
+    }
 
 
 

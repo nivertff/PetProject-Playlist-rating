@@ -21,8 +21,8 @@
               <h4 class="card-title">Rating:</h4>
               <h3 class="card-text" th:text="${song.ratio}"></h3>
                <div th:if="${user.id} == ${song.createdBy.id}">
-                <a class="btn btn-primary" th:href="@{/songs/{songId}/delete(songId=${song.id})}">Delete</a>
                 <a th:href="@{/songs/{songId}/edit(songId=${song.id})}" class="btn btn-primary">Edit</a>
+                   <a class="btn btn-primary" th:href="@{/songs/{songId}/delete(songId=${song.id})}">Delete</a>
                </div>
             </div>
           </div>

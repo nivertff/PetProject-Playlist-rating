@@ -78,6 +78,11 @@ public class SongController {
         model.addAttribute("songs", songs);
         return "songs-list";
     }
+    @GetMapping("/songs/{songId}/delete")
+    public String songDelete(@PathVariable("songId") Long songId){
+        songService.deleteSong(songId);
+        return "redirect:/songs";
+    }
 
     @GetMapping("/songs/new")
     public String newSongForm(Model model){
@@ -86,11 +91,6 @@ public class SongController {
         return "song-create";
     }
 
-    @GetMapping("/songs/{songId}/delete")
-    public String songDelete(@PathVariable("songId") Long songId){
-        songService.deleteSong(songId);
-        return "redirect:/songs";
-    }
 
     @PostMapping("/songs/new")
     public String saveSong(@Valid @ModelAttribute("song") SongDto songDto,

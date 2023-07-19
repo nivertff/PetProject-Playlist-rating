@@ -1,7 +1,9 @@
 package com.ex.newWeb.service.impl;
 
 import com.ex.newWeb.Dto.PlayListDto;
+import com.ex.newWeb.Dto.SongDto;
 import com.ex.newWeb.Repository.PlayListRepository;
+import com.ex.newWeb.Repository.SongRepository;
 import com.ex.newWeb.Repository.UserRepository;
 import com.ex.newWeb.models.PlayList;
 import com.ex.newWeb.models.Song;
@@ -9,15 +11,21 @@ import com.ex.newWeb.models.UserEntity;
 import com.ex.newWeb.security.SecurityUtil;
 import com.ex.newWeb.service.PlayListService;
 import com.ex.newWeb.service.SongService;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.ex.newWeb.mapper.PlayListMapper.mapToPlayList;
 import static com.ex.newWeb.mapper.PlayListMapper.mapToPlayListDto;
+import static com.ex.newWeb.mapper.SongMapper.mapToSong;
 
 @Service
 public class PlayListServiceImpl implements PlayListService {
@@ -26,12 +34,14 @@ public class PlayListServiceImpl implements PlayListService {
     private PlayListRepository playListRepository;
     private UserRepository userRepository;
     private SongService songService;
+    private SongRepository songRepository;
 
     @Autowired
-    public PlayListServiceImpl(SongService songService,PlayListRepository playListRepository,UserRepository userRepository) {
+    public PlayListServiceImpl(SongRepository songRepository,SongService songService,PlayListRepository playListRepository,UserRepository userRepository) {
         this.playListRepository = playListRepository;
         this.userRepository = userRepository;
         this.songService = songService;
+        this.songRepository = songRepository;
     }
 
     @Override
@@ -43,11 +53,14 @@ public class PlayListServiceImpl implements PlayListService {
     @Override
     public PlayListDto findPlayListById(Long playListId) {
         PlayList playList = playListRepository.findById(playListId).get();
-        Double f = playList.getSong().stream().map(son -> son.getRatio())
-                .mapToDouble(Double::doubleValue).average().orElse(0.0);
-        playList.setAvgRatio(Math.round(f * 100.0) / 100.0);
-        playListRepository.save(playList);
-        return mapToPlayListDto(playList);
+        try {
+            Double f = playList.getSong().stream().map(son -> son.getRatio())
+                    .mapToDouble(Double::doubleValue).average().orElse(0.0);
+            playList.setAvgRatio(Math.round(f * 100.0) / 100.0);
+        }finally {
+            playListRepository.save(playList);
+            return mapToPlayListDto(playList);
+        }
     }
 
     @Override
@@ -105,6 +118,58 @@ public class PlayListServiceImpl implements PlayListService {
     public List<PlayListDto> searchAllPlayList(String query) {
         List<PlayList> playLists = playListRepository.searchClubs(query);
         return playLists.stream().map(playList -> mapToPlayListDto(playList)).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public void processCSV(MultipartFile file) throws IOException {
+
+        String username = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByUsername(username);
+
+        List<String> name = new ArrayList<>();
+        List<String> singer = new ArrayList<>();
+        String playListName = "";
+        int count = 0;
+        try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
+            String[] nextLine;
+            while ((nextLine = reader.readNext()) != null) {
+                for (String value : nextLine) {
+                    if((count) % 6 == 0){
+                        name.add(value);
+                    }
+                    if((count - 1) % 6 == 0){
+                        singer.add(value);
+                    }
+                    if(count == 9){
+                        playListName = value;
+                    }
+                    count++;
+                }
+            }
+        } catch (CsvValidationException e) {
+            throw new RuntimeException(e);
+        }
+        name.remove(0);
+        singer.remove(0);
+
+
+        PlayList playList = new PlayList();
+
+        playList.setName(playListName);
+        playList.setCreatedBy(user);
+        playList = playListRepository.save(playList);
+
+        for(int i = 0; i < name.size(); i++){
+            Song song = new Song();
+            song.setName(name.get(i));
+            song.setSinger(singer.get(i));
+            song.setCreatedBy(user);
+            song = songRepository.save(song);
+
+            songService.addSongPlayList(song.getId(),playList.getId());
+        }
+        playListRepository.save(playList);
     }
 
 

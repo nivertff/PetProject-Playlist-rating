@@ -24,7 +24,6 @@ public class SongDto {
     private String name;
     @NotEmpty(message = "Song Singer should not be empty")
     private String singer;
-    @NotNull(message = "Song Rating should not be empty")
     private Double ratio;
     private UserEntity createdBy;
     List<PlayListDto> playLists = new ArrayList<>();

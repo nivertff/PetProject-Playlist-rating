@@ -75,8 +75,14 @@ public class SongServiceImpl implements SongService {
     public void updateSong(SongDto songDto) {
         String username = SecurityUtil.getSessionUser();
         UserEntity user = userRepository.findByUsername(username);
+
+        Long id = songDto.getId();
+        Song song1 = songRepository.findById(id).get();
+
+
         Song song = mapToSong(songDto);
         song.setCreatedBy(user);
+        song.setPlayLists(song1.getPlayLists());
         songRepository.save(song);
     }
 
