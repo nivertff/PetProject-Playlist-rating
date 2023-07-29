@@ -20,13 +20,12 @@
             <div class="row gx-5">
                 <div th:each="playList : ${playLists}" class="col-lg-6">
                     <div class="position-relative mb-5">
-                        <img class="img-fluid rounded-3 mb-3" th:src="${playList.photoUrl}" alt="..." />
-                        <a th:text="${playList.name}" class="h2 fw-bolder text-decoration-none link-dark stretched-link" href="#!">Project name</a>
-                        <h4 class="card-text" th:text="${playList.singer}"></h4>
-                        <h5 class="card-text">Rating playlist :</h5>
-                        <h4 class="card-text" th:text="${playList.ratio}"></h4>
-                        <h5 class="card-text">Created by :</h5>
-                        <h4 class="card-text" th:text="${playList.createdBy.username}"></h4>
+                        <img class="img-fluid rounded-3 mb-3" th:src="${playList.photoUrl}"/>
+                        <a th:href="@{/playLists/{playListId}(playListId=${playList.id})}" class="h2 fw-bolder text-decoration-none link-dark stretched-link" href="#!">
+                            <span th:text="${playList.name}"></span> - <span th:text="${playList.singer}"></span>
+                        </a>
+                        <h5 class="card-text">Rating playlist : <span th:text="${playList.ratio}"></span></h5>
+                        <h5 class="card-text">Created by : <span th:text="${playList.createdBy.username}"></span></h5>
                     </div>
                      <a class="btn btn-primary" th:href="@{/playLists/{playListId}(playListId=${playList.id})}">View</a>
                         <a class="btn btn-primary" th:href="@{/playLists/{playListId}/edit(playListId=${playList.id})}">Edit</a>

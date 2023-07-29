@@ -22,7 +22,9 @@
               <h3 class="card-text" th:text="${song.ratio}"></h3>
                <div th:if="${user.id} == ${song.createdBy.id}">
                 <a th:href="@{/songs/{songId}/edit(songId=${song.id})}" class="btn btn-primary">Edit</a>
-                   <a class="btn btn-primary" th:href="@{/songs/{songId}/delete(songId=${song.id})}">Delete</a>
+               </div>
+               <div th:if="${user.id} != ${song.createdBy.id}">
+                   <a class="btn btn-primary" th:href="@{/songs/{songId}/copy(songId=${song.id})}">Copy</a>
                </div>
             </div>
           </div>

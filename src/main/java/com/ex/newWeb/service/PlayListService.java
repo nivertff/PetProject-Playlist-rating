@@ -26,4 +26,5 @@ public interface PlayListService {
 
     List<PlayListDto> searchPlayList(String query);
     void processCSV(MultipartFile file) throws IOException;
+    void saveCopyPlayList(Long playListId);
 }

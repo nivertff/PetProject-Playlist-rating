@@ -38,7 +38,7 @@ public class SongController {
         return "songs-list";
     }
 
-    @GetMapping("/homeS")
+    @GetMapping("/allSongs")
     public String listAllSongs(Model model){
 
         UserEntity user = new UserEntity();
@@ -52,7 +52,7 @@ public class SongController {
         model.addAttribute("songs", songs);
         return "all-songs-list";
     }
-    @GetMapping("/homeS/search")
+    @GetMapping("/allSongs/search")
     public String searchAllSongs(@RequestParam(value = "query") String query, Model model){
         List<SongDto> songs = songService.searchAllSong(query);
         model.addAttribute("songs", songs);
@@ -81,6 +81,11 @@ public class SongController {
     @GetMapping("/songs/{songId}/delete")
     public String songDelete(@PathVariable("songId") Long songId){
         songService.deleteSong(songId);
+        return "redirect:/songs";
+    }
+    @GetMapping("/songs/{songId}/copy")
+    public String addCopySong(@PathVariable("songId") Long songId){
+        songService.saveCopySong(songId);
         return "redirect:/songs";
     }
 
@@ -126,6 +131,14 @@ public class SongController {
     @GetMapping("/songs/{playListId}/addSong")
     public String addSongPlayList(@PathVariable("playListId") Long playListId, Model model){
         List<SongDto> songs = songService.findYourSongs();
+        model.addAttribute("playListId", playListId);
+        model.addAttribute("songs", songs);
+        return "get-song";
+    }
+    @GetMapping("/songs/{playListId}/addSong/search")
+    public String searchSongInAdd(@RequestParam(value = "query") String query,
+                                  @PathVariable("playListId") Long playListId, Model model){
+        List<SongDto> songs = songService.searchSong(query);
         model.addAttribute("playListId", playListId);
         model.addAttribute("songs", songs);
         return "get-song";

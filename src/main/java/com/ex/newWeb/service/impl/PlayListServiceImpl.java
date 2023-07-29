@@ -95,6 +95,31 @@ public class PlayListServiceImpl implements PlayListService {
         playList.setCreatedBy(user);
         return playListRepository.save(playList);
     }
+    @Override
+    public void saveCopyPlayList(Long playListId) {
+        String username = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByUsername(username);
+
+
+        PlayList playList = playListRepository.findById(playListId).get();
+
+        PlayList playList1 = PlayList.builder()
+                .name(playList.getName())
+                .singer(playList.getSinger())
+                .createdBy(user)
+                .photoUrl(playList.getPhotoUrl())
+                .build();
+        playList1 = playListRepository.save(playList1);
+
+        for(Song s:playList.getSong()) {
+            Song song = songService.saveCopySong(s.getId());
+            songService.addSongPlayList(song.getId(),playList1.getId());
+        }
+        playListRepository.save(playList1);
+
+
+
+    }
 
     @Override
     public void updatePlayList(PlayListDto playListDto) {
@@ -123,7 +148,6 @@ public class PlayListServiceImpl implements PlayListService {
 
     @Override
     public void processCSV(MultipartFile file) throws IOException {
-
         String username = SecurityUtil.getSessionUser();
         UserEntity user = userRepository.findByUsername(username);
 
@@ -155,7 +179,6 @@ public class PlayListServiceImpl implements PlayListService {
 
 
         PlayList playList = new PlayList();
-
         playList.setName(playListName);
         playList.setCreatedBy(user);
         playList = playListRepository.save(playList);
@@ -169,6 +192,7 @@ public class PlayListServiceImpl implements PlayListService {
 
             songService.addSongPlayList(song.getId(),playList.getId());
         }
+
         playListRepository.save(playList);
     }
 

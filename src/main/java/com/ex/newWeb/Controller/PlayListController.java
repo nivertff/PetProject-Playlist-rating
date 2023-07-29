@@ -33,13 +33,7 @@ public class PlayListController {
     }
 
 
-    @GetMapping("/playLists")
-    public String listPlayList(Model model){
-        List<PlayListDto> playLists = playListService.findYourPlayLists();
 
-        model.addAttribute("playLists", playLists);
-        return "playList-list";
-    }
 
     @GetMapping("/home")
     public String listAllPlayList(Model model){
@@ -54,6 +48,12 @@ public class PlayListController {
         model.addAttribute("user",user);
         model.addAttribute("playLists", playLists);
         return "all-playlist-list";
+    }
+    @GetMapping("/playLists")
+    public String listPlayList(Model model){
+        List<PlayListDto> playLists = playListService.findYourPlayLists();
+        model.addAttribute("playLists", playLists);
+        return "playList-list";
     }
 
     @GetMapping("/home/search")
@@ -76,11 +76,26 @@ public class PlayListController {
         model.addAttribute("playList",playListDto);
         return "playList-detail";
     }
+
     @GetMapping("/playLists/search")
     public String searchPlayList(@RequestParam(value = "query") String query, Model model){
         List<PlayListDto> playLists = playListService.searchPlayList(query);
         model.addAttribute("playLists", playLists);
         return "playList-list";
+    }
+
+
+
+    @GetMapping("/playLists/{playListId}/delete")
+    public String deletePlayList(@PathVariable("playListId") Long playListId){
+        playListService.delete(playListId);
+        return "redirect:/playLists";
+    }
+//
+    @GetMapping("/playLists/{playListId}/copy")
+    public String addCopyPlayList(@PathVariable("playListId") Long playListId){
+        playListService.saveCopyPlayList(playListId);
+        return "redirect:/playLists";
     }
 
     @GetMapping("/playLists/new")
@@ -89,13 +104,6 @@ public class PlayListController {
         model.addAttribute("playList", playList);
         return "playList-create";
     }
-
-    @GetMapping("/playLists/{playListId}/delete")
-    public String deletePlayList(@PathVariable("playListId") Long playListId){
-        playListService.delete(playListId);
-        return "redirect:/playLists";
-    }
-
     @PostMapping("/playLists/new")
     public String savePlayList(@Valid @ModelAttribute("playList") PlayListDto playListDto,
                            BindingResult result, Model model){
@@ -133,17 +141,14 @@ public class PlayListController {
 
     @PostMapping("addFile")
     public String handleFileUpload(@RequestParam("file") MultipartFile file) {
-        if (file.isEmpty()) {
-            // Обробка ситуації, коли файл не був вибраний
+        if (file.isEmpty() ) {
             return "redirect:/playLists?error";
         }
 
         try {
             playListService.processCSV(file);
-            // Обробка успішного завершення обробки файлу
             return "redirect:/playLists?success";
         } catch (Exception e) {
-            // Обробка помилки при обробці файлу
             return "redirect:/playLists?error";
         }
     }

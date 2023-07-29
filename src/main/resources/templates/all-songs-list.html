@@ -3,34 +3,36 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
         layout:decorate="~{loyout}">
 <head>
-  <title>Songs</title>
+  <title>PlayList</title>
 </head>
 <body class="d-flex flex-column h-100">
 <main class="flex-shrink-0">
   <!-- Page Content-->
   <section layout:fragment="body" class="py-5">
     <div class="container px-5 my-5">
-      <div class="text-center mb-5">
-        <h1 class="fw-bolder">All songs</h1>
+      <div th:if="${param.success}" class="alert alert-success">
+        You are registered success!!
       </div>
-    <div>
-    <form th:action="@{/songs/search}" class="form-inline my-2 my-lg-0 mb-3">
-      <input name="query" class="form-control mr-sm-2 mb-5" type="search" placeholder="Search Song" aria-label="Search">
-    </form>
+      <div class="text-center mb-5">
+        <h1 class="fw-bolder">Songs</h1>
+      </div>
+      <div>
+        <form th:action="@{/allSongs/search}" class="form-inline my-2 my-lg-0 mb-3">
+          <input name="query" class="form-control mr-sm-2 mb-5" type="search" placeholder="Search Song" aria-label="Search">
+        </form>
+      </div>
       <div class="row gx-5">
-        <div th:each="song :${songs}" class="col-lg-6 mb-2">
+        <div th:each="song : ${songs}" class="col-lg-6">
           <div class="position-relative mb-3">
             <a th:href="@{/songs/{songId}(songId=${song.id})}" class="h3 fw-bolder text-decoration-none link-dark stretched-link">
               <span th:text="${song.name}"></span> - <span th:text="${song.singer}"></span>
             </a>
             <h5 class="card-text">Ratio song: <span th:text="${song.ratio}"></span></h5>
             <h5 class="card-text">Created By: <span th:text="${song.createdBy.username}"></span></h5>
-        </div>
-          <a th:href="@{/songs/{songId}(songId=${song.id})}" class="btn btn-primary">View</a>
-          <a th:href="@{/songs/{songId}/delete(songId=${song.id})}" class="btn btn-primary" >Delete</a>
+          </div>
+          <a class="btn btn-primary" th:href="@{/songs/{songId}(songId=${song.id})}">View</a>
         </div>
       </div>
-    </div>
     </div>
   </section>
 </main>

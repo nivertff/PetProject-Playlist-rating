@@ -1,5 +1,6 @@
 package com.ex.newWeb.service.impl;
 
+import com.ex.newWeb.Dto.PlayListDto;
 import com.ex.newWeb.Dto.SongDto;
 import com.ex.newWeb.Repository.PlayListRepository;
 import com.ex.newWeb.Repository.SongRepository;
@@ -69,6 +70,20 @@ public class SongServiceImpl implements SongService {
         song.setCreatedBy(user);
         return songRepository.save(song);
     }
+    @Override
+    public Song saveCopySong(Long songId) {
+        String username = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByUsername(username);
+        Song song = songRepository.findById(songId).get();
+
+        Song song1 = Song.builder()
+                .name(song.getName())
+                .singer(song.getSinger())
+                .createdBy(user)
+                .build();
+        return songRepository.save(song1);
+
+    }
 
 
     @Override
@@ -109,14 +124,19 @@ public class SongServiceImpl implements SongService {
         Song song = songRepository.findById(songId).get();
         PlayList playList = playListRepository.findById(playListId).get();
 
-        List<PlayList> playLists = song.getPlayLists();
+        List<PlayList> playLists = new ArrayList<>();
+        if(song.getPlayLists() != null) {
+            playLists = song.getPlayLists();
+        }
         playLists.add(playList);
         song.setPlayLists(playLists);
 
-        List<Song> songs = playList.getSong();
+        List<Song> songs = new ArrayList<>();
+        if(playList.getSong() != null) {
+            songs = playList.getSong();
+        }
         songs.add(song);
         playList.setSong(songs);
-
 
         song.setCreatedBy(user);
         playList.setCreatedBy(user);
