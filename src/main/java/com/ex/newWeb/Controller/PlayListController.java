@@ -37,23 +37,9 @@ public class PlayListController {
 
     @GetMapping("/home")
     public String listAllPlayList(Model model){
-
-        UserEntity user = new UserEntity();
         List<PlayListDto> playLists = playListService.findAllPlayLists();
-        String username = SecurityUtil.getSessionUser();
-        if(username != null){
-            user = userService.findByUsername(username);
-            model.addAttribute("user",user);
-        }
-        model.addAttribute("user",user);
         model.addAttribute("playLists", playLists);
         return "all-playlist-list";
-    }
-    @GetMapping("/playLists")
-    public String listPlayList(Model model){
-        List<PlayListDto> playLists = playListService.findYourPlayLists();
-        model.addAttribute("playLists", playLists);
-        return "playList-list";
     }
 
     @GetMapping("/home/search")
@@ -62,6 +48,21 @@ public class PlayListController {
         model.addAttribute("playLists", playLists);
         return "all-playlist-list";
     }
+
+    @GetMapping("/playLists")
+    public String listPlayList(Model model){
+        List<PlayListDto> playLists = playListService.findYourPlayLists();
+        model.addAttribute("playLists", playLists);
+        return "playList-list";
+    }
+
+    @GetMapping("/playLists/search")
+    public String searchPlayList(@RequestParam(value = "query") String query, Model model){
+        List<PlayListDto> playLists = playListService.searchPlayList(query);
+        model.addAttribute("playLists", playLists);
+        return "playList-list";
+    }
+
 
     @GetMapping("/playLists/{playListId}")
     public String playListDetail(@PathVariable("playListId") Long playListId, Model model){
@@ -77,32 +78,35 @@ public class PlayListController {
         return "playList-detail";
     }
 
-    @GetMapping("/playLists/search")
-    public String searchPlayList(@RequestParam(value = "query") String query, Model model){
-        List<PlayListDto> playLists = playListService.searchPlayList(query);
-        model.addAttribute("playLists", playLists);
-        return "playList-list";
-    }
-
-
 
     @GetMapping("/playLists/{playListId}/delete")
     public String deletePlayList(@PathVariable("playListId") Long playListId){
-        playListService.delete(playListId);
+        String username = SecurityUtil.getSessionUser();
+        if(username != null) {
+            playListService.delete(playListId);
+        }
         return "redirect:/playLists";
     }
-//
+
     @GetMapping("/playLists/{playListId}/copy")
     public String addCopyPlayList(@PathVariable("playListId") Long playListId){
-        playListService.saveCopyPlayList(playListId);
+        String username = SecurityUtil.getSessionUser();
+        if(username != null) {
+            playListService.saveCopyPlayList(playListId);
+        }
         return "redirect:/playLists";
     }
 
     @GetMapping("/playLists/new")
     public String createPlayList(Model model){
-        PlayList playList = new PlayList();
-        model.addAttribute("playList", playList);
-        return "playList-create";
+        String username = SecurityUtil.getSessionUser();
+        if(username != null) {
+            PlayList playList = new PlayList();
+            model.addAttribute("playList", playList);
+            return "playList-create";
+        }else{
+            return "redirect:/home?error";
+        }
     }
     @PostMapping("/playLists/new")
     public String savePlayList(@Valid @ModelAttribute("playList") PlayListDto playListDto,
@@ -117,9 +121,15 @@ public class PlayListController {
 
     @GetMapping("/playLists/{playListId}/edit")
     public String editPlayListForm(@PathVariable("playListId") Long playListId, Model model){
-        PlayListDto playListDto = playListService.findPlayListById(playListId);
-        model.addAttribute("playList", playListDto);
-        return "playList-edit";
+        String username = SecurityUtil.getSessionUser();
+        if(username != null) {
+            PlayListDto playListDto = playListService.findPlayListById(playListId);
+            if(username.equals(playListDto.getCreatedBy().getUsername())) {
+                model.addAttribute("playList", playListDto);
+                return "playList-edit";
+            }
+        }
+        return "redirect:/home?error";
     }
 
 
@@ -141,6 +151,7 @@ public class PlayListController {
 
     @PostMapping("addFile")
     public String handleFileUpload(@RequestParam("file") MultipartFile file) {
+
         if (file.isEmpty() ) {
             return "redirect:/playLists?error";
         }

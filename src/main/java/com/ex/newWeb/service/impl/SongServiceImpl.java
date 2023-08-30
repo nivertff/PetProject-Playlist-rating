@@ -56,10 +56,13 @@ public class SongServiceImpl implements SongService {
     }
     @Override
     public void deleteSong(Long songId) {
+        String username = SecurityUtil.getSessionUser();
         Song song = songRepository.findById(songId).get();
-        song.setPlayLists(new ArrayList<>());
-        songRepository.save(song);
-        songRepository.deleteById(songId);
+        if(username.equals(song.getCreatedBy().getUsername())) {
+            song.setPlayLists(new ArrayList<>());
+            songRepository.save(song);
+            songRepository.deleteById(songId);
+        }
     }
 
     @Override
@@ -90,11 +93,8 @@ public class SongServiceImpl implements SongService {
     public void updateSong(SongDto songDto) {
         String username = SecurityUtil.getSessionUser();
         UserEntity user = userRepository.findByUsername(username);
-
         Long id = songDto.getId();
         Song song1 = songRepository.findById(id).get();
-
-
         Song song = mapToSong(songDto);
         song.setCreatedBy(user);
         song.setPlayLists(song1.getPlayLists());

@@ -73,18 +73,21 @@ public class PlayListServiceImpl implements PlayListService {
 
     @Override
     public void delete(Long playListId) {
+        String username = SecurityUtil.getSessionUser();
         PlayList playList = playListRepository.findById(playListId).get();
-        if(playList.getSong() != null) {
-            List<Song> songs = playList.getSong();
-            for (Song song : songs) {
-                List<PlayList> playLists = song.getPlayLists();
-                playLists.remove(playList);
-                song.setPlayLists(playLists);
+        if(username.equals(playList.getCreatedBy().getUsername()) ) {
+            if (playList.getSong() != null) {
+                List<Song> songs = playList.getSong();
+                for (Song song : songs) {
+                    List<PlayList> playLists = song.getPlayLists();
+                    playLists.remove(playList);
+                    song.setPlayLists(playLists);
+                }
+                playList.setSong(new ArrayList<>());
+                playListRepository.save(playList);
             }
-            playList.setSong(new ArrayList<>());
-            playListRepository.save(playList);
+            playListRepository.deleteById(playListId);
         }
-        playListRepository.deleteById(playListId);
     }
 
     @Override
